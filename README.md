@@ -50,8 +50,6 @@ Made with ❤️ by [@Dunsinagb](https://github.com/dunsinagb)
 
 Inspired by [WikiTok](https://wikitok.io), originally created by [@Aizkmusic](https://x.com/Aizkmusic)
 
-If you enjoy this project, you can [buy me a coffee! ☕](https://buymeacoffee.com/dunsinagb)
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
