@@ -12,5 +12,16 @@
       "source": "/api/novypro/:path*",
       "destination": "https://www.novypro.com/:path*"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*\\.(ico|png|svg))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
+      ]
+    }
   ]
 }
