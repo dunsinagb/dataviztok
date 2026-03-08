@@ -10,13 +10,17 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
+      },
       manifest: {
         name: "DataVizTok",
         short_name: "DataVizTok",
         description: "Discover amazing data visualization dashboards",
         icons: [
           {
-            src: "/wiki-logo.svg",
+            src: "/dataviztok-icon.svg",
             sizes: "any",
             type: "image/svg+xml",
             purpose: "any maskable",
