@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/tableau/:path*",
+      "destination": "https://public.tableau.com/:path*"
+    },
+    {
+      "source": "/api/powerbi/:path*",
+      "destination": "https://community.fabric.microsoft.com/:path*"
+    },
+    {
+      "source": "/api/novypro/:path*",
+      "destination": "https://www.novypro.com/:path*"
+    }
+  ]
+}
