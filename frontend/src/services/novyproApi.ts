@@ -16,6 +16,7 @@ export interface NovyProDashboard {
   thumbnailUrl: string;
   sourceUrl: string;
   platform: "PowerBI" | "Tableau" | "Excel";
+  author: string;
 }
 
 const SEED_DASHBOARDS: NovyProDashboard[] = [
@@ -27,6 +28,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1677045621969x269664931804364900/Perform.png",
     sourceUrl: "https://www.novypro.com/project/data-professional-survey",
     platform: "PowerBI",
+    author: "Taiwo Lawrence",
   },
   {
     id: "novypro-hr-analytics-dashboard",
@@ -36,6 +38,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1710953219775x552549527480698000/Screenshot%202024-03-20%20221650.png",
     sourceUrl: "https://www.novypro.com/project/hr-analytics-dashboard",
     platform: "Tableau",
+    author: "Bipi",
   },
   {
     id: "novypro-global-superstore-2",
@@ -45,6 +48,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1674371817236x387752939589581760/Global%20superstore.GIF",
     sourceUrl: "https://www.novypro.com/project/global-superstore-2",
     platform: "PowerBI",
+    author: "Avinash Ghodse",
   },
   {
     id: "novypro-ecommerce-sales-dashboard-2",
@@ -54,6 +58,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1685025932880x810820871735686800/polotno.png",
     sourceUrl: "https://www.novypro.com/project/ecommerce-sales-dashboard-2",
     platform: "PowerBI",
+    author: "Shubham Hajare",
   },
   {
     id: "novypro-pizza-sales-dashboard-2",
@@ -63,6 +68,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1685979130284x828327571288114200/cover%20photo.png",
     sourceUrl: "https://www.novypro.com/project/pizza-sales-dashboard-2",
     platform: "PowerBI",
+    author: "Wedhar Gilang Prihandoko",
   },
   {
     id: "novypro-amazon-prime-video-analysis",
@@ -72,6 +78,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1687749441988x195301728857604000/Screenshot_20230626-084254~2.png",
     sourceUrl: "https://www.novypro.com/project/amazon-prime-video-analysis",
     platform: "PowerBI",
+    author: "Sharaffin B",
   },
   {
     id: "novypro-spotify-dashboard-3",
@@ -81,6 +88,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1696765071164x660703553075241900/Spotify%20Dashboard.jpg",
     sourceUrl: "https://www.novypro.com/project/spotify-dashboard-3",
     platform: "Tableau",
+    author: "LSGP",
   },
   {
     id: "novypro-financial-dashboard-14",
@@ -90,6 +98,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1696615919262x993075957420202400/Screenshot%202023-10-06%20130623.png",
     sourceUrl: "https://www.novypro.com/project/financial-dashboard-14",
     platform: "PowerBI",
+    author: "Olusola Oso",
   },
   {
     id: "novypro-supply-chain-dashboard",
@@ -99,6 +108,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1683401988384x652005874943743900/Supply%20chain.jpg",
     sourceUrl: "https://www.novypro.com/project/supply-chain-dashboard",
     platform: "PowerBI",
+    author: "Mina Markos",
   },
   {
     id: "novypro-customer-churn-analysis-2",
@@ -108,6 +118,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1659192159052x553826728428714640/Picture3.png",
     sourceUrl: "https://www.novypro.com/project/customer-churn-analysis-2",
     platform: "PowerBI",
+    author: "Pramoth Jagannathan",
   },
   {
     id: "novypro-covid-19-dashboard-6",
@@ -117,6 +128,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1690632876787x724465899254234100/Covid%20Report%20ScreenShot.png",
     sourceUrl: "https://www.novypro.com/project/covid-19-dashboard-6",
     platform: "PowerBI",
+    author: "Anish Anand Shetty",
   },
   {
     id: "novypro-world-population-dashboard",
@@ -126,6 +138,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1690732163351x215313412397817100/Screenshot%202023-07-30%20210241.png",
     sourceUrl: "https://www.novypro.com/project/world-population-dashboard",
     platform: "PowerBI",
+    author: "Nikhil Gorat",
   },
   {
     id: "novypro-hotel-revenue-dashboard",
@@ -135,6 +148,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1656265073068x465176394307248000/cover.PNG",
     sourceUrl: "https://www.novypro.com/project/hotel-revenue-dashboard",
     platform: "PowerBI",
+    author: "Tomas",
   },
   {
     id: "novypro-road-accident-dashboard",
@@ -144,6 +158,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1680600375735x265127500650479840/Road%20Accident%20Dashboard.jpg",
     sourceUrl: "https://www.novypro.com/project/road-accident-dashboard",
     platform: "PowerBI",
+    author: "Pramod Ganar",
   },
   {
     id: "novypro-netflix-dashboard-4",
@@ -153,6 +168,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1683356107931x317784645789961150/Screenshot%20%2818%29.png",
     sourceUrl: "https://www.novypro.com/project/netflix-dashboard-4",
     platform: "PowerBI",
+    author: "Harpreet K",
   },
   {
     id: "novypro-space-missions-dashboard",
@@ -162,6 +178,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1680173890814x383744626518736800/Space%20Challenge%203.png",
     sourceUrl: "https://www.novypro.com/project/space-missions-dashboard",
     platform: "PowerBI",
+    author: "Ahmad Al Jamal",
   },
   {
     id: "novypro-adventure-works-report",
@@ -171,6 +188,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1655127628085x305080668323486140/AdventureWorks_Logo.png",
     sourceUrl: "https://www.novypro.com/project/adventure-works-report",
     platform: "PowerBI",
+    author: "Vedanta Mohapatra",
   },
   {
     id: "novypro-bank-loan-report",
@@ -180,6 +198,7 @@ const SEED_DASHBOARDS: NovyProDashboard[] = [
       "https://f2fa1cdd9340fae53fcb49f577292458.cdn.bubble.io/cdn-cgi/image/w=,h=,f=auto,dpr=1,fit=contain/f1701696478220x412249915990586400/Bank%20loan%20img.png",
     sourceUrl: "https://www.novypro.com/project/bank-loan-report",
     platform: "PowerBI",
+    author: "Chandan Kumar",
   },
 ];
 
@@ -219,6 +238,10 @@ export async function scrapeNovyProProject(
     const platform = titleParts[0] as "PowerBI" | "Tableau" | "Excel";
     const title = titleParts[2] ?? titleParts[0] ?? slug;
 
+    const authorMatch = html.match(
+      /<meta[^>]*name=["']author["'][^>]*content=["']([^"']+)["']/,
+    );
+
     return {
       id: `novypro-${slug}`,
       slug,
@@ -228,6 +251,7 @@ export async function scrapeNovyProProject(
       platform: ["PowerBI", "Tableau", "Excel"].includes(platform)
         ? platform
         : "PowerBI",
+      author: authorMatch?.[1] ?? "Unknown",
     };
   } catch {
     return null;

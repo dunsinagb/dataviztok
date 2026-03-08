@@ -61,8 +61,8 @@ export function DashboardCard({ dashboard }: DashboardCardProps) {
   const platformColor =
     dashboard.platform === DashboardPlatform.PowerBI
       ? "bg-yellow-500/20 text-yellow-300"
-      : dashboard.platform === DashboardPlatform.NovyPro
-        ? "bg-purple-500/20 text-purple-300"
+      : dashboard.platform === DashboardPlatform.TableauPublic
+        ? "bg-blue-500/20 text-blue-300"
         : "bg-white/10 text-white/60";
 
   return (

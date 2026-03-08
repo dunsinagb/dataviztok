@@ -77,7 +77,7 @@ function transformNovyProDashboard(np: NovyProDashboard): Dashboard {
     id: np.id,
     title: np.title,
     description: `${np.title} — an interactive ${np.platform} dashboard hosted on NovyPro.`,
-    author: { name: "NovyPro Community" },
+    author: { name: np.author, profileUrl: np.sourceUrl },
     thumbnailUrl: np.thumbnailUrl,
     sourceUrl: np.sourceUrl,
     platform: np.platform === "Tableau"

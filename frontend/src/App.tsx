@@ -51,26 +51,28 @@ function App() {
   );
 
   const handleExport = () => {
-    const simplifiedDashboards = likedDashboards.map((dashboard) => ({
-      title: dashboard.title,
-      description: dashboard.description,
-      author: dashboard.author.name,
-      sourceUrl: dashboard.sourceUrl,
-      thumbnailUrl: dashboard.thumbnailUrl,
-      platform: dashboard.platform,
-      category: dashboard.category,
-    }));
+    const today = new Date().toISOString().split("T")[0];
 
-    const dataStr = JSON.stringify(simplifiedDashboards, null, 2);
+    const exportData = {
+      exportedAt: today,
+      count: likedDashboards.length,
+      favorites: likedDashboards.map((dashboard) => ({
+        title: dashboard.title,
+        description: dashboard.description,
+        author: dashboard.author.name,
+        url: dashboard.sourceUrl,
+        platform: dashboard.platform,
+        category: dashboard.category,
+      })),
+    };
+
+    const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri =
       "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = `dataviztok-favorites-${new Date().toISOString().split("T")[0]
-      }.json`;
-
     const linkElement = document.createElement("a");
     linkElement.setAttribute("href", dataUri);
-    linkElement.setAttribute("download", exportFileDefaultName);
+    linkElement.setAttribute("download", `dataviztok-favorites-${today}.json`);
     linkElement.click();
   };
 
