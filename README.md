@@ -46,8 +46,6 @@ No backend required!
 
 ## Credits
 
-Made with ❤️ by [@Dunsinagb](https://github.com/dunsinagb)
-
 Inspired by [WikiTok](https://wikitok.io), originally created by [@Aizkmusic](https://x.com/Aizkmusic)
 
 ## License
