@@ -10,7 +10,7 @@ import { useCategoryFilter } from "./hooks/useCategoryFilter";
 function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
-  const { currentCategory } = useCategoryFilter();
+  const { currentCategory, setCategory } = useCategoryFilter();
   const { dashboards, loading, fetchDashboards } = useDashboards({ category: currentCategory });
   const { likedDashboards, toggleLike } = useLikedDashboards();
   const observerTarget = useRef(null);
@@ -98,7 +98,7 @@ function App() {
         >
           Likes
         </button>
-        <CategoryFilter />
+        <CategoryFilter currentCategory={currentCategory} onCategoryChange={setCategory} />
       </div>
 
       {showAbout && (

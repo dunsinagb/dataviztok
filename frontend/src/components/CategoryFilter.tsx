@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useCategoryFilter } from '../hooks/useCategoryFilter';
+import { DashboardCategory } from '../types/Dashboard';
 
-export function CategoryFilter() {
+interface CategoryFilterProps {
+  currentCategory: string | null;
+  onCategoryChange: (category: string | null) => void;
+}
+
+export function CategoryFilter({ currentCategory, onCategoryChange }: CategoryFilterProps) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const { currentCategory, setCategory, categories } = useCategoryFilter();
+  const categories = Object.values(DashboardCategory);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -25,7 +30,7 @@ export function CategoryFilter() {
   }, [showDropdown]);
 
   const handleCategorySelect = (category: string | null) => {
-    setCategory(category);
+    onCategoryChange(category);
     setShowDropdown(false);
   };
 

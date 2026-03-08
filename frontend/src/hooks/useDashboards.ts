@@ -76,13 +76,28 @@ function transformNovyProDashboard(np: NovyProDashboard): Dashboard {
   return {
     id: np.id,
     title: np.title,
-    description: `Explore this ${np.platform} dashboard on NovyPro.`,
+    description: `${np.title} — an interactive ${np.platform} dashboard hosted on NovyPro.`,
     author: { name: "NovyPro Community" },
     thumbnailUrl: np.thumbnailUrl,
     sourceUrl: np.sourceUrl,
-    platform: DashboardPlatform.NovyPro,
+    platform: np.platform === "Tableau"
+      ? DashboardPlatform.TableauPublic
+      : DashboardPlatform.PowerBI,
     category: inferCategoryFromText(np.title),
   };
+}
+
+const GENERIC_DESCRIPTIONS = [
+  "Explore this interactive data visualization on Tableau Public.",
+];
+
+function hasQualityContent(d: Dashboard): boolean {
+  if (!d.thumbnailUrl) return false;
+  if (!d.description) return false;
+  if (GENERIC_DESCRIPTIONS.includes(d.description)) return false;
+  if (d.description.startsWith("Explore this") && d.description.endsWith("on NovyPro."))
+    return false;
+  return true;
 }
 
 let cachedPowerBI: Dashboard[] | null = null;
@@ -142,6 +157,9 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
             : cachedNovyPro;
           newDashboards.push(...novyItems);
 
+          // Only keep dashboards with a real thumbnail and description
+          newDashboards = newDashboards.filter(hasQualityContent);
+
           if (newDashboards.length === 0) {
             throw new Error("No dashboards from any API");
           }
@@ -167,17 +185,19 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
       }
 
       // Static fallback
-      let available = category
+      let available = (category
         ? DASHBOARD_LIBRARY.filter((d) => d.category === category)
-        : DASHBOARD_LIBRARY;
+        : DASHBOARD_LIBRARY
+      ).filter(hasQualityContent);
 
       available = available.filter((d) => !shownIds.has(d.id));
 
       if (available.length === 0) {
         setShownIds(new Set());
-        available = category
+        available = (category
           ? DASHBOARD_LIBRARY.filter((d) => d.category === category)
-          : DASHBOARD_LIBRARY;
+          : DASHBOARD_LIBRARY
+        ).filter(hasQualityContent);
       }
 
       const nextBatch = shuffleArray(available).slice(0, DASHBOARDS_PER_LOAD);

@@ -79,7 +79,7 @@ export function DashboardCard({ dashboard }: DashboardCardProps) {
             <img
               src={dashboard.thumbnailUrl}
               alt={dashboard.title}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+              className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               loading="lazy"
@@ -102,11 +102,11 @@ export function DashboardCard({ dashboard }: DashboardCardProps) {
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/60" />
 
       {/* Bottom metadata overlay */}
-      <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-black/40 rounded-lg p-4 border border-white/10 z-10">
+      <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 backdrop-blur-md bg-black/40 rounded-lg p-3 sm:p-4 border border-white/10 z-10">
         <div className="flex justify-between items-start gap-4">
           <div className="flex-1 min-w-0">
             {/* Title */}
-            <h2 className="text-xl font-bold text-white mb-1 drop-shadow-lg line-clamp-2">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-1 drop-shadow-lg line-clamp-2">
               {dashboard.title}
             </h2>
 
