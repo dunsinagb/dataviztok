@@ -22,7 +22,7 @@ A TikTok-style interface for exploring random Data Visualizations from multiple 
 
 ## Development
 
-Run the commands below in the `/frontend` folder.
+Run the commands below in the `/frontend` folder
 
 Install dependencies:
 
