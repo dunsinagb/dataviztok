@@ -67,7 +67,7 @@ export function DashboardCard({ dashboard }: DashboardCardProps) {
 
   return (
     <div
-      className="h-screen w-full snap-start relative bg-gray-900"
+      className="h-dvh w-full snap-start relative bg-gray-900"
       onDoubleClick={handleDoubleClick}
     >
       {/* Thumbnail background or placeholder */}
