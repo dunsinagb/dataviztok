@@ -100,14 +100,26 @@ function hasQualityContent(d: Dashboard): boolean {
   return true;
 }
 
-let cachedPowerBI: Dashboard[] | null = null;
+// Remove cachedPowerBI - fetch fresh each time for variety
 let cachedNovyPro: Dashboard[] | null = null;
 
 export function useDashboards(options: UseDashboardsOptions = {}) {
   const { category } = options;
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [loading, setLoading] = useState(false);
-  const [shownIds, setShownIds] = useState<Set<string>>(new Set());
+  const [shownIds, setShownIds] = useState<Set<string>>(() => {
+    // Load from localStorage on init to persist across sessions
+    const saved = localStorage.getItem('shownDashboardIds');
+    if (saved) {
+      try {
+        const ids = JSON.parse(saved);
+        return new Set(ids);
+      } catch {
+        return new Set();
+      }
+    }
+    return new Set();
+  });
   const [useStaticFallback, setUseStaticFallback] = useState(false);
 
   const fetchDashboards = useCallback(async () => {
@@ -122,18 +134,12 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
             cachedNovyPro = fetchNovyProDashboards().map(transformNovyProDashboard);
           }
 
-          // Fetch Tableau and Power BI in parallel
+          // Fetch Tableau and Power BI in parallel (fresh each time for variety)
           const [tableauResult, powerbiResult] = await Promise.allSettled([
             category
               ? searchTableauByCategory(category, DASHBOARDS_PER_LOAD)
               : fetchTableauDashboards(DASHBOARDS_PER_LOAD),
-            cachedPowerBI
-              ? Promise.resolve(cachedPowerBI)
-              : fetchPowerBIDashboards().then((items) => {
-                  const transformed = items.map(transformPowerBIDashboard);
-                  cachedPowerBI = transformed;
-                  return transformed;
-                }),
+            fetchPowerBIDashboards().then((items) => items.map(transformPowerBIDashboard)),
           ]);
 
           let newDashboards: Dashboard[] = [];
@@ -216,6 +222,20 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
     setShownIds(new Set());
     setUseStaticFallback(false);
   }, []);
+
+  // Persist shownIds to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('shownDashboardIds', JSON.stringify(Array.from(shownIds)));
+  }, [shownIds]);
+
+  // Cleanup: keep only the last 100 IDs when exceeding 200
+  useEffect(() => {
+    if (shownIds.size > 200) {
+      const idsArray = Array.from(shownIds);
+      const recentIds = idsArray.slice(-100);
+      setShownIds(new Set(recentIds));
+    }
+  }, [shownIds]);
 
   useEffect(() => {
     resetDashboards();

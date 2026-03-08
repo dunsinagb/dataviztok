@@ -32,10 +32,17 @@ function fetchWithTimeout(url: string, ms = FETCH_TIMEOUT_MS): Promise<Response>
 }
 
 const SEARCH_TERMS = [
+  // Original terms
   "dashboard", "sales", "analytics", "marketing", "finance",
   "health", "education", "climate", "population", "sports",
   "covid", "supply chain", "HR", "revenue", "customer",
   "world", "survey", "performance", "KPI", "map",
+  // Additional variety for more diverse results
+  "business", "data", "visualization", "metrics", "trends",
+  "insights", "report", "analysis", "statistics", "growth",
+  "profit", "budget", "forecast", "inventory", "logistics",
+  "productivity", "efficiency", "quality", "risk", "compliance",
+  "social media", "ecommerce", "retail", "manufacturing", "energy",
 ];
 
 function randomSearchTerm(): string {
@@ -54,7 +61,7 @@ function buildThumbnailUrl(defaultViewRepoUrl: string): string {
 
 export async function fetchTableauDashboards(count = 20): Promise<TableauViz[]> {
   const query = randomSearchTerm();
-  const start = Math.floor(Math.random() * 200);
+  const start = Math.floor(Math.random() * 500); // Increased from 200 to 500 for more variety
 
   const url =
     `/api/tableau/public/apis/bff/v1/search/query-workbooks?` +
@@ -62,6 +69,7 @@ export async function fetchTableauDashboards(count = 20): Promise<TableauViz[]> 
       count: count.toString(),
       query,
       start: start.toString(),
+      _t: Date.now().toString(), // Cache buster to ensure fresh results
     });
 
   const response = await fetchWithTimeout(url);
@@ -100,7 +108,7 @@ export async function searchTableauByCategory(
   category: string,
   count = 20,
 ): Promise<TableauViz[]> {
-  const start = Math.floor(Math.random() * 200);
+  const start = Math.floor(Math.random() * 500); // Increased from 200 to 500
 
   const url =
     `/api/tableau/public/apis/bff/v1/search/query-workbooks?` +
@@ -108,6 +116,7 @@ export async function searchTableauByCategory(
       count: count.toString(),
       query: category.toLowerCase(),
       start: start.toString(),
+      _t: Date.now().toString(), // Cache buster
     });
 
   const response = await fetchWithTimeout(url);
