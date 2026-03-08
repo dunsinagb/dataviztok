@@ -19,6 +19,7 @@ export default defineConfig({
             src: "/wiki-logo.svg",
             sizes: "any",
             type: "image/svg+xml",
+            purpose: "any maskable",
           },
         ],
         start_url: "/",
