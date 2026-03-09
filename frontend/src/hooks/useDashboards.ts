@@ -148,13 +148,13 @@ function getCategoryBoost(d: Dashboard, selectedCategory: string | null): number
   // Only boost when viewing "all categories"
   if (selectedCategory !== null) return 0;
 
-  const PRIORITY_CATEGORIES = {
+  const PRIORITY_CATEGORIES: Record<string, number> = {
     [DashboardCategory.Health]: 25,
     [DashboardCategory.Sports]: 25,
     [DashboardCategory.Marketing]: 25,
   };
 
-  const SECONDARY_BOOST = {
+  const SECONDARY_BOOST: Record<string, number> = {
     [DashboardCategory.Finance]: 10,
     [DashboardCategory.Environment]: 10,
     [DashboardCategory.Social]: 5,
@@ -281,7 +281,7 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
           }
 
           // Apply weighted shuffle based on quality + category boost
-          newDashboards = weightedShuffle(newDashboards, (d) => getFinalScore(d, category));
+          newDashboards = weightedShuffle(newDashboards, (d) => getFinalScore(d, category ?? null));
 
           // Ensure source diversity (no single platform dominates)
           newDashboards = ensureSourceDiversity(newDashboards);
