@@ -97,6 +97,17 @@ function meetsMinimumQuality(d: Dashboard): boolean {
   if (!d.description) return false;
   if (GENERIC_DESCRIPTIONS.includes(d.description)) return false;
   if (d.title.length < 5 || d.title === "Untitled") return false;
+
+  // Detect Tableau placeholder URL patterns (secondary filter)
+  if (d.platform === DashboardPlatform.TableauPublic) {
+    const urlPath = d.thumbnailUrl.toLowerCase();
+    if (/\/sheet\d*$/i.test(urlPath) ||
+        /\/view\d*$/i.test(urlPath) ||
+        /\/dashboard\d*$/i.test(urlPath)) {
+      return false;
+    }
+  }
+
   return true;
 }
 

@@ -63,6 +63,21 @@ function randomSearchTerm(): string {
 }
 
 /**
+ * Check if a Tableau view has a placeholder/generic thumbnail.
+ * Generic view names like "Sheet1", "View1", "Dashboard" typically have placeholder images.
+ */
+function isPlaceholderThumbnail(defaultViewRepoUrl: string): boolean {
+  const viewName = defaultViewRepoUrl.split('/').pop()?.toLowerCase() || '';
+  const placeholderPatterns = [
+    /^sheet\d*$/,        // Sheet, Sheet1, Sheet2...
+    /^view\d*$/,         // View, View1, View2...
+    /^dashboard\d*$/,    // Dashboard, Dashboard1...
+    /^untitled/,         // Untitled workbooks
+  ];
+  return placeholderPatterns.some(pattern => pattern.test(viewName));
+}
+
+/**
  * Build a thumbnail URL from the defaultViewRepoUrl returned by the API.
  * API returns e.g. "SalesDashboard/sheets/Overview"
  * Thumbnail lives at /thumb/views/SalesDashboard/Overview  (strip "/sheets/")
@@ -96,6 +111,7 @@ export async function fetchTableauDashboards(count = 20): Promise<TableauViz[]> 
 
   const vizzes: TableauViz[] = results
     .filter((r: any) => r.workbook?.defaultViewRepoUrl)
+    .filter((r: any) => !isPlaceholderThumbnail(r.workbook.defaultViewRepoUrl))
     .map((r: any) => {
       const wb = r.workbook;
       return {
@@ -143,6 +159,7 @@ export async function searchTableauByCategory(
 
   return results
     .filter((r: any) => r.workbook?.defaultViewRepoUrl)
+    .filter((r: any) => !isPlaceholderThumbnail(r.workbook.defaultViewRepoUrl))
     .map((r: any) => {
       const wb = r.workbook;
       return {
