@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
 import { Dashboard, DashboardCategory, DashboardPlatform } from "../types/Dashboard";
 import { DASHBOARD_LIBRARY } from "../data/dashboardLibrary";
-import { shuffleArray } from "../utils/shuffleArray";
+import { shuffleArray, weightedShuffle } from "../utils/shuffleArray";
 import { fetchTableauDashboards, searchTableauByCategory, TableauViz } from "../services/tableauApi";
 import { fetchPowerBIDashboards, PowerBIDashboard } from "../services/powerbiApi";
 import { fetchNovyProDashboards, NovyProDashboard } from "../services/novyproApi";
 
-const DASHBOARDS_PER_LOAD = 20;
+const DASHBOARDS_PER_LOAD = 45;
 
 interface UseDashboardsOptions {
   category?: string | null;
@@ -91,13 +91,116 @@ const GENERIC_DESCRIPTIONS = [
   "Explore this interactive data visualization on Tableau Public.",
 ];
 
-function hasQualityContent(d: Dashboard): boolean {
+function meetsMinimumQuality(d: Dashboard): boolean {
+  // Hard requirements
   if (!d.thumbnailUrl) return false;
   if (!d.description) return false;
   if (GENERIC_DESCRIPTIONS.includes(d.description)) return false;
   if (d.description.startsWith("Explore this") && d.description.endsWith("on NovyPro."))
     return false;
+  if (d.title.length < 5 || d.title === "Untitled") return false;
   return true;
+}
+
+function calculateQualityScore(d: Dashboard): number {
+  let score = 10; // Base score
+
+  // Tableau engagement metrics
+  if (d.viewCount !== undefined && d.favoriteCount !== undefined) {
+    // View count (logarithmic scale)
+    if (d.viewCount >= 10000) score += 30;
+    else if (d.viewCount >= 5000) score += 25;
+    else if (d.viewCount >= 1000) score += 20;
+    else if (d.viewCount >= 500) score += 10;
+    else if (d.viewCount >= 100) score += 5;
+
+    // Favorite count
+    if (d.favoriteCount >= 100) score += 25;
+    else if (d.favoriteCount >= 50) score += 20;
+    else if (d.favoriteCount >= 20) score += 15;
+    else if (d.favoriteCount >= 10) score += 10;
+    else if (d.favoriteCount >= 5) score += 5;
+
+    // Engagement ratio bonus
+    const engagementRatio = d.favoriteCount / Math.max(d.viewCount, 1);
+    if (engagementRatio > 0.01) score += 15;
+    else if (engagementRatio > 0.005) score += 10;
+    else if (engagementRatio > 0.001) score += 5;
+  } else {
+    // PowerBI and NovyPro are curated
+    if (d.platform === DashboardPlatform.PowerBI) score += 40;
+    if (d.platform === DashboardPlatform.TableauPublic && d.sourceUrl.includes("novypro")) {
+      score += 35;
+    }
+  }
+
+  // Description quality
+  if (d.description.length > 100) score += 5;
+  if (d.description.length > 200) score += 5;
+
+  // Professional title
+  if (!/^[A-Z\s]+$/.test(d.title) && d.title.length > 10) score += 5;
+
+  return score;
+}
+
+function getCategoryBoost(d: Dashboard, selectedCategory: string | null): number {
+  // Only boost when viewing "all categories"
+  if (selectedCategory !== null) return 0;
+
+  const PRIORITY_CATEGORIES = {
+    [DashboardCategory.Health]: 25,
+    [DashboardCategory.Sports]: 25,
+    [DashboardCategory.Marketing]: 25,
+  };
+
+  const SECONDARY_BOOST = {
+    [DashboardCategory.Finance]: 10,
+    [DashboardCategory.Environment]: 10,
+    [DashboardCategory.Social]: 5,
+  };
+
+  return PRIORITY_CATEGORIES[d.category] || SECONDARY_BOOST[d.category] || 0;
+}
+
+function getFinalScore(d: Dashboard, selectedCategory: string | null): number {
+  return calculateQualityScore(d) + getCategoryBoost(d, selectedCategory);
+}
+
+function ensureSourceDiversity(dashboards: Dashboard[]): Dashboard[] {
+  if (dashboards.length <= 10) return dashboards;
+
+  // Group by platform
+  const platformGroups = new Map<DashboardPlatform, Dashboard[]>();
+
+  dashboards.forEach(d => {
+    if (!platformGroups.has(d.platform)) {
+      platformGroups.set(d.platform, []);
+    }
+    platformGroups.get(d.platform)!.push(d);
+  });
+
+  // Round-robin selection from each platform
+  const balanced: Dashboard[] = [];
+  const platformIterators = new Map<DashboardPlatform, number>();
+  platformGroups.forEach((_, platform) => platformIterators.set(platform, 0));
+
+  while (balanced.length < dashboards.length) {
+    let addedThisRound = false;
+
+    platformGroups.forEach((group, platform) => {
+      const idx = platformIterators.get(platform)!;
+      if (idx < group.length && balanced.length < dashboards.length) {
+        balanced.push(group[idx]);
+        platformIterators.set(platform, idx + 1);
+        addedThisRound = true;
+      }
+    });
+
+    if (!addedThisRound) break;
+  }
+
+  return balanced;
 }
 
 // Remove cachedPowerBI - fetch fresh each time for variety
@@ -163,8 +266,8 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
             : cachedNovyPro;
           newDashboards.push(...novyItems);
 
-          // Only keep dashboards with a real thumbnail and description
-          newDashboards = newDashboards.filter(hasQualityContent);
+          // Only keep dashboards meeting minimum quality
+          newDashboards = newDashboards.filter(meetsMinimumQuality);
 
           if (newDashboards.length === 0) {
             throw new Error("No dashboards from any API");
@@ -177,8 +280,11 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
             throw new Error("No new dashboards after filtering");
           }
 
-          // Shuffle so all sources are interleaved
-          newDashboards = shuffleArray(newDashboards);
+          // Apply weighted shuffle based on quality + category boost
+          newDashboards = weightedShuffle(newDashboards, (d) => getFinalScore(d, category));
+
+          // Ensure source diversity (no single platform dominates)
+          newDashboards = ensureSourceDiversity(newDashboards);
 
           setDashboards((prev) => [...prev, ...newDashboards]);
           setShownIds((prev) => new Set([...prev, ...newDashboards.map((d) => d.id)]));
@@ -194,7 +300,7 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
       let available = (category
         ? DASHBOARD_LIBRARY.filter((d) => d.category === category)
         : DASHBOARD_LIBRARY
-      ).filter(hasQualityContent);
+      ).filter(meetsMinimumQuality);
 
       available = available.filter((d) => !shownIds.has(d.id));
 
@@ -203,7 +309,7 @@ export function useDashboards(options: UseDashboardsOptions = {}) {
         available = (category
           ? DASHBOARD_LIBRARY.filter((d) => d.category === category)
           : DASHBOARD_LIBRARY
-        ).filter(hasQualityContent);
+        ).filter(meetsMinimumQuality);
       }
 
       const nextBatch = shuffleArray(available).slice(0, DASHBOARDS_PER_LOAD);

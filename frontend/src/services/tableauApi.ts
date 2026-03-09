@@ -32,17 +32,30 @@ function fetchWithTimeout(url: string, ms = FETCH_TIMEOUT_MS): Promise<Response>
 }
 
 const SEARCH_TERMS = [
-  // Original terms
-  "dashboard", "sales", "analytics", "marketing", "finance",
-  "health", "education", "climate", "population", "sports",
-  "covid", "supply chain", "HR", "revenue", "customer",
-  "world", "survey", "performance", "KPI", "map",
-  // Additional variety for more diverse results
-  "business", "data", "visualization", "metrics", "trends",
-  "insights", "report", "analysis", "statistics", "growth",
-  "profit", "budget", "forecast", "inventory", "logistics",
-  "productivity", "efficiency", "quality", "risk", "compliance",
-  "social media", "ecommerce", "retail", "manufacturing", "energy",
+  // Health category focus (priority)
+  "health analytics", "healthcare dashboard", "medical data", "hospital metrics",
+  "patient care", "public health", "wellness tracking", "disease analysis",
+  "mental health", "vaccination data", "health outcomes", "clinical dashboard",
+
+  // Sports category focus (priority)
+  "sports analytics", "NBA statistics", "football data", "soccer dashboard",
+  "olympic games", "athlete performance", "sports betting", "game analysis",
+  "basketball stats", "tennis rankings", "cricket analytics", "FIFA world cup",
+
+  // Marketing category focus (priority)
+  "marketing analytics", "campaign dashboard", "brand performance", "advertising metrics",
+  "social media analytics", "customer engagement", "conversion funnel", "email marketing",
+  "content marketing", "SEO analytics", "digital marketing", "marketing ROI",
+
+  // Original high-quality terms
+  "dashboard", "sales", "analytics", "finance", "revenue",
+  "customer", "supply chain", "HR", "performance", "KPI",
+  "business", "data visualization", "metrics", "trends", "insights",
+  "report", "analysis", "statistics", "growth", "profit",
+  "budget", "forecast", "inventory", "logistics", "productivity",
+  "efficiency", "quality", "risk", "compliance", "retail",
+  "ecommerce", "manufacturing", "energy", "education", "climate",
+  "population", "covid", "world", "survey", "map",
 ];
 
 function randomSearchTerm(): string {
