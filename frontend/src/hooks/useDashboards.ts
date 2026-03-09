@@ -96,8 +96,6 @@ function meetsMinimumQuality(d: Dashboard): boolean {
   if (!d.thumbnailUrl) return false;
   if (!d.description) return false;
   if (GENERIC_DESCRIPTIONS.includes(d.description)) return false;
-  if (d.description.startsWith("Explore this") && d.description.endsWith("on NovyPro."))
-    return false;
   if (d.title.length < 5 || d.title === "Untitled") return false;
   return true;
 }
